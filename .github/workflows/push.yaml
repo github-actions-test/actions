@@ -6,8 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 10.x
-      - run: yarn install
-      - run: yarn meta git checkout
+
+  install:
+    name: Install the stuff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: github-actions-test/fetch-binaries@v1
