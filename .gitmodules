@@ -1,3 +1,6 @@
 [submodule "foo"]
 	path = foo
 	url = git@github.com:github-actions-test/foo.git
+[submodule "bar"]
+	path = bar
+	url = git@github.com:github-actions-test/bar.git
