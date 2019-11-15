@@ -1,0 +1,11 @@
+name: Actions Test
+on: [push]
+jobs:
+  init:
+    name: Initialize and checkout
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+      - run: yarn install
