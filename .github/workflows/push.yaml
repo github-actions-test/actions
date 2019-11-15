@@ -11,4 +11,4 @@ jobs:
     name: Install the stuff
     runs-on: ubuntu-latest
     steps:
-      - uses: github-actions-test/fetch-binaries-action@v1
+      - uses: github-actions-test/fetch-binaries-action@master
