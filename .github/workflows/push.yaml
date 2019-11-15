@@ -3,9 +3,11 @@ on: [push]
 jobs:
   init:
     name: Initialize and checkout
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
           node-version: 10.x
       - run: yarn install
+- Your workflow file was invalid: The pipeline is not valid. .github/workflows/push.yaml (Line: 5, Col: 5): Required property is missing: runs-on
