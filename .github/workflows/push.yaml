@@ -10,4 +10,3 @@ jobs:
         with:
           node-version: 10.x
       - run: yarn install
-- Your workflow file was invalid: The pipeline is not valid. .github/workflows/push.yaml (Line: 5, Col: 5): Required property is missing: runs-on
