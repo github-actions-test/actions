@@ -1,14 +1,9 @@
 name: Actions Test
 on: [push]
 jobs:
-  init:
-    name: Initialize and checkout
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-
   install:
     name: Install the stuff
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - uses: github-actions-test/fetch-binaries-action@master
