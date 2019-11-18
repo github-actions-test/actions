@@ -8,4 +8,4 @@ jobs:
       - uses: actions/checkout@v1
       - uses: github-actions-test/fetch-binaries-action@master
         with:
-          download-url-pattern: 'http://35.228.224.98/files/sha.tar.gz?token=29c0640d89c6f3ecd256'
+          downloadUrlPattern: 'http://35.228.224.98/files/sha.tar.gz?token=29c0640d89c6f3ecd256'
