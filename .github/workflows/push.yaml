@@ -5,7 +5,11 @@ jobs:
     name: Install the stuff
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: github-actions-test/fetch-binaries-action@master
+      - name: Checkout Source
+        uses: actions/checkout@v1
+
+        
+      - name: Download binaries
+        uses: github-actions-test/fetch-binaries-action@master
         with:
-          downloadUrlPattern: 'http://35.228.224.98/files/${sha}.tar.gz?token=29c0640d89c6f3ecd256'
+          downloadUrlPattern: 'http://35.228.224.98/files/${name}-master.tar.gz?token=29c0640d89c6f3ecd256'
