@@ -16,6 +16,7 @@ jobs:
       - name: Run Tests
         run: |
           set -eEuo pipefail
+          set -x
           cd artifacts
           export LD_LIBRARY_PATH=foo/lib64
           [[ "$(bar/bin/bar)" = "The answer is: 42" ]]
