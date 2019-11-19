@@ -1,15 +1,21 @@
 name: Actions Test
 on: [push]
 jobs:
-  install:
+  test:
     name: Install the stuff
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source
         uses: actions/checkout@v1
 
-        
       - name: Download binaries
         uses: github-actions-test/fetch-binaries-action@master
         with:
           downloadUrlPattern: 'http://35.228.224.98/files/${name}-master.tar.gz?token=29c0640d89c6f3ecd256'
+
+      - name: Run Tests
+        run: |
+          set -eEuo pipefail
+          cd artifacts
+          export LD_LIBRARY_PATH=foo/lib64
+          [[ "$(bar/bin/bar)" = "The answer is: 42" ]]
