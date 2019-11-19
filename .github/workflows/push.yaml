@@ -9,14 +9,31 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Download binaries
-        uses: github-actions-test/fetch-binaries-action@master
-        with:
-          downloadUrlPattern: 'http://35.228.224.98/files/${name}-master.tar.gz?token=29c0640d89c6f3ecd256'
+        run: |
+          set -eEuo pipefail
+          set -x
+          
+          # Parse the git log and find the latest artifact url for each submodule,
+          # download and decompress each of the artifacts
+          while read -r s; do eval $s; done < <( \
+              git log --reverse --pretty=%B \
+                  | grep -E 'Update .+:' \
+                  | while read -r x; do \
+                      echo $x \
+                          | cut -d' ' -f3 \
+                          | xargs -I URL curl --fail --silent --remote-name URL \
+                          | tar xv
+                  ; done \
+          )
+
+      # - name: Download binaries
+      #   uses: github-actions-test/fetch-binaries-action@master
+      #   with:
+      #     downloadUrlPattern: 'http://35.228.224.98/files/${name}-master.tar.gz?token=29c0640d89c6f3ecd256'
 
       - name: Run Tests
         run: |
           set -eEuo pipefail
           set -x
-          cd artifacts
-          export LD_LIBRARY_PATH=foo/lib64
-          [[ "$(bar/bin/bar)" = "The answer is: 42" ]]
+          export LD_LIBRARY_PATH=lib64
+          [[ "$(bin/bar)" = "The answer is: 42" ]]
