@@ -22,7 +22,7 @@ jobs:
                       echo $x \
                           | cut -d' ' -f3 \
                           | xargs -I URL curl --fail --silent --remote-name URL \
-                          | tar xv; \
+                          | tar zxv; \
                   done \
           )
 
