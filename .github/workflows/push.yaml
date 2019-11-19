@@ -22,7 +22,7 @@ jobs:
                       echo $x \
                           | cut -d' ' -f3 \
                           | xargs -I URL curl --fail --silent URL \
-                          | tar zxv; \
+                          | sudo tar zxv; \
                   done \
           )
 
