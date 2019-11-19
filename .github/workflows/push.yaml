@@ -21,7 +21,7 @@ jobs:
                   | while read -r x; do \
                       echo $x \
                           | cut -d' ' -f3 \
-                          | xargs -I URL curl --fail --silent --remote-name URL \
+                          | xargs -I URL curl --fail --silent URL \
                           | tar zxv; \
                   done \
           )
