@@ -22,8 +22,8 @@ jobs:
                       echo $x \
                           | cut -d' ' -f3 \
                           | xargs -I URL curl --fail --silent --remote-name URL \
-                          | tar xv
-                  ; done \
+                          | tar xv; \
+                  done \
           )
 
       # - name: Download binaries
