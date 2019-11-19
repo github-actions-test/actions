@@ -27,7 +27,7 @@ jobs:
           done
 
           # Download the artifacts
-          printenv | grep ^download_ | while read -r submodule url; do
+          printenv | grep ^download_ | tr '=' ' ' | while read -r submodule url; do
             curl $url | tar xvz
           done
 
