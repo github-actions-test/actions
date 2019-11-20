@@ -14,7 +14,7 @@ jobs:
           
           # Parse the git log and find the artifacts for each submodule.
           # The function expects that the git log contains entries like
-          #   Update foo: http://www.download.com/foo.tar.gz
+          #   Update foo http://www.download.com/foo.tar.gz
           # It traverses the whole commit log and finds the latest entry for
           # each submodule.
           parse-log() {
