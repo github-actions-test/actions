@@ -12,7 +12,11 @@ jobs:
         run: |
           set -eEuo pipefail
           
-          # Parse the git log and find the artifacts for each submodule
+          # Parse the git log and find the artifacts for each submodule.
+          # The function expects that the git log contains entries like
+          #   Update foo: http://www.download.com/foo.tar.gz
+          # It traverses the whole commit log and finds the latest entry for
+          # each submodule.
           parse-log() {
               local -r aggregate='BEGIN {FS=OFS=SUBSEP=" "}{arr[$1] = $2} END {for (i in arr) print i,arr[i]}'
               git log --reverse --pretty=%B | grep -E 'Update .+:' | while read -r x; do
@@ -20,16 +24,11 @@ jobs:
               done | awk "$aggregate"
           }
           
-          # Download artifacts
+          # Download artifacts for each submodule
           parse-log | while read -r submodule url; do
               echo "Downloading $url" >&2
-              curl --silent --fail $url | sudo tar xvz
+              curl --silent --fail $url | sudo tar xz
           done
-
-      # - name: Download binaries
-      #   uses: github-actions-test/fetch-binaries-action@master
-      #   with:
-      #     downloadUrlPattern: 'http://35.228.224.98/files/${name}-master.tar.gz?token=29c0640d89c6f3ecd256'
 
       - name: Run Tests
         run: |
