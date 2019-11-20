@@ -19,7 +19,8 @@ jobs:
           # each submodule.
           parse-log() {
               local -r aggregate='BEGIN {FS=OFS=SUBSEP=" "}{arr[$1] = $2} END {for (i in arr) print i,arr[i]}'
-              git log --reverse --pretty=%B | grep -E 'Update .+:' | while read -r x; do
+              local -r pattern='Update .+ https?://[a-zA-Z0-9./?=_-]*'
+              git log --reverse --pretty=%B | grep -E "$pattern" | while read -r x; do
                   echo $x | cut -d' ' -f2,3
               done | awk "$aggregate"
           }
