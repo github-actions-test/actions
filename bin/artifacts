@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -eEuo pipefail
+
+parse-log() {
+    local -r aggregate='BEGIN {FS=OFS=SUBSEP=" "}{arr[$1] = $2} END {for (i in arr) print i,arr[i]}'
+    local -r pattern='Update .+ https?://[a-zA-Z0-9./?=_-]*'
+    git log --reverse --pretty=%B | grep -E "$pattern" | while read -r x; do
+        echo $x | cut -d' ' -f2,3
+    done | awk "$aggregate"
+}
+
+(cd `dirname $0` && parse-log | python -c "
+import argparse
+import sys
+
+parser = argparse.ArgumentParser(description='Print download URL for submodule artifacts')
+parser.add_argument('--exclude', default=[], action='append', help='submodule to exclude')
+parser.add_argument('--include', default=[], action='append', help='submodule to include')
+
+args = parser.parse_args()
+
+modules = [x.strip().split(' ') for x in sys.stdin.readlines()]
+include = set(map(lambda x: x[0], filter(lambda x: x[0] in args.include, modules)))
+exclude = set(map(lambda x: x[0], filter(lambda x: x[0] in args.exclude, modules)))
+everything = set(map(lambda x: x[0], modules))
+selection = (everything - set(args.exclude)) & (include if len(include) > 0 else everything)
+
+for module in [' '.join(module) for module in modules if module[0] in selection]:
+    print module
+" $*)
