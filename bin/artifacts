@@ -20,10 +20,8 @@ parser.add_argument('--include', default=[], action='append', help='submodule to
 args = parser.parse_args()
 
 modules = [x.strip().split(' ') for x in sys.stdin.readlines()]
-include = set(map(lambda x: x[0], filter(lambda x: x[0] in args.include, modules)))
-exclude = set(map(lambda x: x[0], filter(lambda x: x[0] in args.exclude, modules)))
 everything = set(map(lambda x: x[0], modules))
-selection = (everything - set(args.exclude)) & (include if len(include) > 0 else everything)
+selection = (everything - set(args.exclude)) & (set(args.include) if len(args.include) > 0 else everything)
 
 for module in [' '.join(module) for module in modules if module[0] in selection]:
     print module
