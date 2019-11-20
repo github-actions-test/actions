@@ -35,5 +35,5 @@ jobs:
         run: |
           set -eEuo pipefail
           set -x
-          export LD_LIBRARY_PATH=lib64
+          export LD_LIBRARY_PATH=lib
           [[ "$(bin/bar)" = "The answer is: 42" ]]
