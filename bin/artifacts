@@ -9,13 +9,17 @@ parse-log() {
     done | awk "$aggregate"
 }
 
-(cd `dirname $0` && parse-log | python -c "
+parse-log | python -c "
 import argparse
 import sys
+from subprocess import *
 
 parser = argparse.ArgumentParser(description='Print download URL for submodule artifacts')
 parser.add_argument('--exclude', default=[], action='append', help='submodule to exclude')
 parser.add_argument('--include', default=[], action='append', help='submodule to include')
+parser.add_argument('--silent', default=False, action='store_true', help='do not print the URLs')
+parser.add_argument('--download', default=False, action='store_true', help='download and extract the artifacts')
+parser.add_argument('--extract-path', default='.', type=str, help='path to extract artifacts to')
 
 args = parser.parse_args()
 
@@ -23,6 +27,12 @@ modules = [x.strip().split(' ') for x in sys.stdin.readlines()]
 everything = set(map(lambda x: x[0], modules))
 selection = (everything - set(args.exclude)) & (set(args.include) if len(args.include) > 0 else everything)
 
-for module in [' '.join(module) for module in modules if module[0] in selection]:
-    print module
-" $*)
+for module in [module for module in modules if module[0] in selection]:
+    if not args.silent:
+        print(' '.join(module))
+    if args.download:
+        url = module[1]
+	path = args.extract_path
+        sys.stderr.write('Downloading %s\n' % url)
+	check_output('curl --fail --silent %s | tar -C %s -xz --transform \'s@include@usr/include@\'' % (url, path), shell=True)
+" $*
