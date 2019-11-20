@@ -28,7 +28,7 @@ jobs:
           # Download artifacts for each submodule
           parse-log | while read -r submodule url; do
               echo "Downloading $url" >&2
-              curl --silent --fail $url | sudo tar -C / -xz
+              curl --silent --fail $url | tar xzv
           done
 
       - name: Run Tests
