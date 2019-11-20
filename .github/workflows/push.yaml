@@ -15,15 +15,17 @@ jobs:
           
           # Parse the git log and find the artifacts for each submodule
           parse-log() {
+              readonly aggregate='BEGIN {FS=OFS=SUBSEP=" "}{arr[$1] = $2} END {for (i in arr) print i,arr[i]}'
               git log --reverse --pretty=%B | grep -E 'Update .+:' | while read -r x; do
-                  echo $x | cut -d' ' -f2,3 | tr ' ' '='
-              done
+                  echo $x | cut -d' ' -f2,3
+              done | awk "$aggregate"
           }
-
+          parse-log
+          
           # Download artifacts
-          while read -r submodule url; do
+          parse-log | while read -r submodule url; do
             curl $url | sudo tar xvz
-          done < <(parse-log)
+          done
 
       # - name: Download binaries
       #   uses: github-actions-test/fetch-binaries-action@master
