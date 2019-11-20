@@ -20,18 +20,10 @@ jobs:
               done
           }
 
-          # Store the urls in environment variables, more recent assignment overwrite
-          # old ones
+          # Download artifacts
           while read -r submodule url; do
-            printf "%s\n" "http://35.228.224.98/files/foo-pr-30.tar.gz?token=29c0640d89c6f3ecd256"
-            eval download_${submodule}=${url}
+            curl $url | sudo tar xvz
           done < <(parse-log)
-
-          # Download the artifacts
-          printenv | grep ^download_
-          printenv | grep ^download_ | tr '=' ' ' | while read -r submodule url; do
-            curl $url | tar xvz
-          done
 
       # - name: Download binaries
       #   uses: github-actions-test/fetch-binaries-action@master
