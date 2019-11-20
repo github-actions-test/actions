@@ -25,7 +25,7 @@ jobs:
           while read -r submodule url; do
             printf "%s\n" "http://35.228.224.98/files/foo-pr-30.tar.gz?token=29c0640d89c6f3ecd256"
             eval download_${submodule}=${url}
-          done
+          done < <(parse-log)
 
           # Download the artifacts
           printenv | grep ^download_
