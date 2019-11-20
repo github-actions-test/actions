@@ -11,7 +11,6 @@ jobs:
       - name: Download binaries
         run: |
           set -eEuo pipefail
-          set -x
           
           # Parse the git log and find the artifacts for each submodule
           parse-log() {
@@ -20,11 +19,11 @@ jobs:
                   echo $x | cut -d' ' -f2,3
               done | awk "$aggregate"
           }
-          parse-log
           
           # Download artifacts
           parse-log | while read -r submodule url; do
-            curl $url | sudo tar xvz
+              echo "Downloading $url" >&2
+              curl --silent --fail $url | sudo tar xvz
           done
 
       # - name: Download binaries
