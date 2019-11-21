@@ -25,4 +25,5 @@ jobs:
       - name: Promote master to stage-1
         run: |
           set -eEuo pipefail
-          git push master origin/stage-1
+          git checkout -B stage-1
+          git push origin stage-1
