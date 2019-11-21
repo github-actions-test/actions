@@ -22,8 +22,9 @@ jobs:
           export LD_LIBRARY_PATH=lib
           [[ "$(bin/bar)" = "The answer is: 42" ]]
 
-      - name: Promote master to stage-1
-        run: |
-          set -eEuo pipefail
-          git checkout -B stage-1
-          git push origin stage-1
+      - name: Promote Branch to stage-1
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: refs/heads/stage-1
+          force: true          
