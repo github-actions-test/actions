@@ -2,7 +2,7 @@ name: stage-1
 on:
   push:
     branches:
-      - 'stage-1'
+      - 'pipeline/stage-1'
 jobs:
   test:
     name: Install the stuff
@@ -28,5 +28,5 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: refs/heads/stage-2
+          branch: refs/heads/release
           force: true          
