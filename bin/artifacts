@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -eEuo pipefail
-set -x
 
 parse-log() {
     local -r aggregate='BEGIN {FS=OFS=SUBSEP=" "}{arr[$1] = $2} END {for (i in arr) print i,arr[i]}'
@@ -14,6 +13,7 @@ parse-args() {
     python -c "
 import argparse
 import sys
+from subprocess import *
 
 parser = argparse.ArgumentParser(description='Print download URL for submodule artifacts')
 parser.add_argument('--exclude', default=[], action='append', help='submodule to exclude')
@@ -23,7 +23,7 @@ parser.add_argument('--download', default=False, action='store_true', help='down
 parser.add_argument('--extract-path', default='.', type=str, help='path to extract artifacts to')
 
 args = parser.parse_args()
-
+print(sys.argv)
 modules = [x.strip().split(' ') for x in sys.stdin.readlines()]
 everything = set(map(lambda x: x[0], modules))
 selection = (everything - set(args.exclude)) & (set(args.include) if len(args.include) > 0 else everything)
@@ -33,8 +33,8 @@ for module in [module for module in modules if module[0] in selection]:
         print('echo %s' % ' '.join(module))
     if args.download:
         url=module[1]
-        print('curl --fail --silent %s | tar -C %s -zxv --transform s@include@usr/include@ --show-stored-names ' % (url, args.extract_path))
+        check_output('curl --fail --silent %s | tar -C %s -zxv --transform s@include@usr/include@ --show-stored-names ' % (url, args.extract_path))
 " $*
 }
-
-parse-log | parse-args $* | while read -r cmd; do eval "$cmd"; done
+set -x
+parse-log | parse-args $*
