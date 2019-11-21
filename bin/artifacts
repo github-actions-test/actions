@@ -10,24 +10,6 @@ parse-log() {
     done | awk "$aggregate"
 }
 
-parse-output() {
-    log() {
-        printf "%s %s\n" "$1" "$2"
-    }
-
-    download() {
-        curl --fail --silent "$1" | tar -C "$2" -zxv --transform 's#include#usr/include#' --show-stored-names
-    }
-
-    while read -r action arg1 arg2; do
-	case "$action" in
-	    log) log "$arg1" "$arg2" ;;
-	    download) download "$arg2" "$extract_path" ;;
-	    set) eval "$arg1=$arg2" ;;
-	esac
-    done < <(cat /dev/stdin)
-}
-
 parse-args() {
     python -c "
 import argparse
@@ -46,15 +28,13 @@ modules = [x.strip().split(' ') for x in sys.stdin.readlines()]
 everything = set(map(lambda x: x[0], modules))
 selection = (everything - set(args.exclude)) & (set(args.include) if len(args.include) > 0 else everything)
 
-print('set extract_path %s' % args.extract_path)
-
 for module in [module for module in modules if module[0] in selection]:
-    module = ' '.join(module)
     if not args.silent:
-        print('log %s' % module)
+        print('echo %s' % ' '.join(module))
     if args.download:
-        print('download %s' % module)
+        url=module[1]
+        print('curl --fail --silent %s | tar -C %s -zxv --transform s@include@usr/include@ --show-stored-names ' % (url, args.extract_path))
 " $*
 }
 
-parse-log | parse-args $* | parse-output
+parse-log | parse-args $* | while read -r cmd; do eval "$cmd"; done
