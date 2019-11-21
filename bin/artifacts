@@ -9,7 +9,7 @@ parse-log() {
     done | awk "$aggregate"
 }
 
-parse-log | python3 -c "
+parse-log | python -m trace -c "
 import argparse
 import sys
 from subprocess import *
