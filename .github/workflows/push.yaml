@@ -1,4 +1,4 @@
-name: Actions Test
+name: Tests
 on: [push]
 jobs:
   test:
