@@ -22,6 +22,11 @@ jobs:
           export LD_LIBRARY_PATH=lib
           [[ "$(bin/bar)" = "The answer is: 42" ]]
 
+      - name: Workaround GitHub Bug(?)
+        run: |
+          set -eEuo pipefail
+          git commit --amend --no-edit          
+          
       - name: Promote Branch to pipeline/stage-1
         uses: ad-m/github-push-action@master
         with:
