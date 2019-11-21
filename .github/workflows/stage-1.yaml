@@ -1,0 +1,32 @@
+name: stage-1
+on:
+  push:
+    branches:
+      - stage-1
+jobs:
+  test:
+    name: Install the stuff
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v1
+
+      - name: Download binaries
+        run: |
+          set -eEuo pipefail
+          bin/artifacts --download
+
+      - name: Run Stress Tests
+        run: |
+          set -eEuo pipefail
+          export LD_LIBRARY_PATH=lib
+          for i in {1..1000}; do
+              [[ "$(bin/bar)" = "The answer is: 42" ]]
+          done
+
+      - name: Promote Branch to stage-2
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: refs/heads/stage-2
+          force: true          
