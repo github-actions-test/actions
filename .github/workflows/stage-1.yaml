@@ -24,6 +24,11 @@ jobs:
               [[ "$(bin/bar)" = "The answer is: 42" ]]
           done
 
+      - name: Workaround GitHub Bug(?)
+        run: |
+          set -eEuo pipefail
+          git commit --amend --no-edit
+          
       - name: Promote Branch to release
         uses: ad-m/github-push-action@master
         with:
