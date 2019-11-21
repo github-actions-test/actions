@@ -2,7 +2,7 @@ name: stage-1
 on:
   push:
     branches:
-      - /refs/heads/stage-1
+      - 'stage-1'
 jobs:
   test:
     name: Install the stuff
