@@ -1,4 +1,5 @@
 ![](https://github.com/github-actions-test/actions/workflows/master/badge.svg)
+
 ![](https://github.com/github-actions-test/actions/workflows/stage-1/badge.svg)
 
 # GitHub Actions Continouous Integration Pipeline Example
