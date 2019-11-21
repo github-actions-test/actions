@@ -9,15 +9,15 @@ parse-log() {
     done | awk "$aggregate"
 }
 
-log() {
-    printf "%s %s\n" "$1" "$2"
-}
-
-download() {
-    curl --fail --silent "$1" | tar -C "$2" -zxv --transform 's#include#usr/include#' --show-stored-names
-}
-
 parse-output() {
+    log() {
+        printf "%s %s\n" "$1" "$2"
+    }
+
+    download() {
+        curl --fail --silent "$1" | tar -C "$2" -zxv --transform 's#include#usr/include#' --show-stored-names
+    }
+
     while read -r action arg1 arg2; do
 	case "$action" in
 	    log) log "$arg1" "$arg2" ;;
@@ -27,7 +27,8 @@ parse-output() {
     done < <(cat /dev/stdin)
 }
 
-parse-log | python -c "
+parse-args() {
+    python -c "
 import argparse
 import sys
 
@@ -52,4 +53,7 @@ for module in [module for module in modules if module[0] in selection]:
         print('log %s' % module)
     if args.download:
         print('download %s' % module)
-" $* | parse-output
+" $*
+}
+
+parse-log | parse-args $* | parse-output
