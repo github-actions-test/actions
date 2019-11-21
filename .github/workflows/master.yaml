@@ -1,5 +1,8 @@
-name: Tests
-on: [push]
+name: master
+on:
+  push:
+    branches:
+      - master
 jobs:
   test:
     name: Install the stuff
@@ -16,6 +19,10 @@ jobs:
       - name: Run Tests
         run: |
           set -eEuo pipefail
-          set -x
           export LD_LIBRARY_PATH=lib
           [[ "$(bin/bar)" = "The answer is: 42" ]]
+
+      - name: Promote Branch to stage-1
+        run: |
+          set -eEuo pipefail
+          git push origin stage-1
