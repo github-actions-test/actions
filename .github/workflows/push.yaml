@@ -11,10 +11,7 @@ jobs:
       - name: Download binaries
         run: |
           set -eEuo pipefail
-          bin/artifacts | while read -r submodule url; do
-              echo "Downloading $url" >&2
-              curl --silent --fail $url | tar xzv
-          done
+          bin/artifacts --download
 
       - name: Run Tests
         run: |
