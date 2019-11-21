@@ -22,7 +22,7 @@ jobs:
           export LD_LIBRARY_PATH=lib
           [[ "$(bin/bar)" = "The answer is: 42" ]]
 
-      - name: Promote Branch to stage-1
+      - name: Promote master to stage-1
         run: |
           set -eEuo pipefail
-          git push origin/stage-1
+          git push master origin/stage-1
