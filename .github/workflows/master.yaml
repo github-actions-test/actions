@@ -25,4 +25,4 @@ jobs:
       - name: Promote Branch to stage-1
         run: |
           set -eEuo pipefail
-          git push origin stage-1
+          git push origin/stage-1
