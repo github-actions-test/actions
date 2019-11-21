@@ -1,3 +1,4 @@
+![](https://github.com/github-actions-test/actions/workflows/Tests/badge.svg)
 # actionshello
 hej
 hej
